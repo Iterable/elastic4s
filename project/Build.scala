@@ -24,7 +24,7 @@ object Build extends AutoPlugin {
     val MockitoVersion = "1.9.5"
     val PlayJsonVersion = "2.6.0-M7"
     val ReactiveStreamsVersion = "1.0.0"
-    val ScalaVersion = "2.12.2"
+    val ScalaVersion = "2.10.4"
     val ScalatestVersion = "3.0.3"
     val Slf4jVersion = "1.7.12"
   }
@@ -38,7 +38,7 @@ object Build extends AutoPlugin {
     // appending everything from 'compileonly' to unmanagedClasspath
     unmanagedClasspath in Compile ++= update.value.select(configurationFilter("compileonly")),
     scalaVersion := ScalaVersion,
-    crossScalaVersions := Seq("2.10.4", "2.11.8", scalaVersion.value),
+    crossScalaVersions := Seq(scalaVersion.value),
     publishMavenStyle := true,
     resolvers += Resolver.mavenLocal,
     resolvers += "Elasticsearch Lucene Snapshots" at "https://download.elasticsearch.org/lucenesnapshots/89f6d17",
