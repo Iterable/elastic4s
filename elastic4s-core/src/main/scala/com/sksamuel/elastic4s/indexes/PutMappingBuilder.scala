@@ -9,7 +9,7 @@ object PutMappingBuilder {
     pm.rawSource.fold ({
       MappingContentBuilder.build(pm)
     })({ raw =>
-      XContentFactory.jsonBuilder().rawValue(raw)
+      XContentFactory.parse(raw)
     })
   }
 
