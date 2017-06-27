@@ -36,9 +36,6 @@ trait DeleteImplicits {
         s"/${request.indexesAndTypes.indexes.mkString(",")}/${request.indexesAndTypes.types.mkString(",")}/_delete_by_query"
 
       val params = scala.collection.mutable.Map.empty[String, String]
-      if (request.proceedOnConflicts.contains(true)) {
-        params.put("conflicts", "proceed")
-      }
       request.requestsPerSecond.map(_.toString).foreach(params.put("requests_per_second", _))
       request.timeout.map(_.toMillis + "ms").foreach(params.put("timeout", _))
       request.scrollSize.map(_.toString).foreach(params.put("scroll_size", _))
