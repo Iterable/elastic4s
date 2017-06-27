@@ -26,7 +26,6 @@ trait MappingDefinitionLike {
 case class PutMappingDefinition(indexesAndType: IndexesAndType,
                                 updateAllTypes: Option[Boolean] = None,
                                 ignoreUnavailable: Option[Boolean] = None,
-                                allowNoIndices: Option[Boolean] = None,
                                 expandWildcards: Option[Boolean] = None,
                                 all: Option[Boolean] = None,
                                 source: Option[Boolean] = None,

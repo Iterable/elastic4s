@@ -13,7 +13,6 @@ object MultiSearchContentBuilder {
       if (search.indexesTypes.types.nonEmpty)
         header.field("type", search.indexesTypes.types.mkString(","))
       search.routing.foreach(header.field("routing", _))
-      search.pref.foreach(header.field("preference", _))
       search.searchType.map(_.toString).foreach(header.field("search_type", _))
       header.endObject()
 

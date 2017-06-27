@@ -17,14 +17,9 @@ object SearchBodyBuilderFn {
 
     request.query.map(QueryBuilderFn.apply).foreach(x => builder.rawField("query", x.string))
     request.postFilter.map(QueryBuilderFn.apply).foreach(x => builder.rawField("post_filter", x.string))
-    request.collapse.map(CollapseBuilderFn.apply).foreach(x => builder.rawField("collapse", x.string))
 
     request.from.foreach(builder.field("from", _))
     request.size.foreach(builder.field("size", _))
-
-    if (request.explain.contains(true)) {
-      builder.field("explain", true)
-    }
 
     request.minScore.foreach(builder.field("min_score", _))
     if (request.searchAfter.nonEmpty) {
@@ -41,21 +36,6 @@ object SearchBodyBuilderFn {
       builder.endObject()
     }
 
-    if (request.rescorers.nonEmpty) {
-      builder.startArray("rescore")
-      request.rescorers.foreach { rescore =>
-        builder.startObject()
-        rescore.windowSize.foreach(builder.field("window_size", _))
-        builder.startObject("query")
-        builder.rawField("rescore_query", QueryBuilderFn(rescore.query))
-        rescore.rescoreQueryWeight.foreach(builder.field("rescore_query_weight", _))
-        rescore.originalQueryWeight.foreach(builder.field("query_weight", _))
-        rescore.scoreMode.map(EnumConversions.queryRescoreMode).foreach(builder.field("score_mode", _))
-        builder.endObject().endObject()
-      }
-      builder.endArray()
-    }
-
     if (request.sorts.nonEmpty) {
 			builder.startArray("sort")
 			// Workaround for bug where separator is not added with rawValues
@@ -64,33 +44,8 @@ object SearchBodyBuilderFn {
 			builder.endArray()
     }
 
-    request.trackScores.map(builder.field("track_scores", _))
-
-    request.highlight.foreach { highlight =>
-      builder.rawField("highlight", HighlightBuilderFn(highlight))
-    }
-
-    if (request.suggs.nonEmpty) {
-      builder.startObject("suggest")
-      request.globalSuggestionText.foreach(builder.field("text", _))
-      request.suggs.foreach {
-        case term: TermSuggestionDefinition => builder.rawField(term.name, TermSuggestionBuilderFn(term))
-      }
-      builder.endObject()
-    }
-
     if (request.storedFields.nonEmpty) {
       builder.array("stored_fields", request.storedFields.toArray)
-    }
-
-    if (request.indexBoosts.nonEmpty) {
-      builder.startArray("indices_boost")
-      request.indexBoosts.foreach { case (name, double) =>
-        builder.startObject()
-        builder.field(name, double)
-        builder.endObject()
-      }
-      builder.endArray()
     }
 
     // source filtering

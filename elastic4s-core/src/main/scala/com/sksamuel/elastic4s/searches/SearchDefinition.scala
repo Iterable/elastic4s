@@ -16,33 +16,23 @@ import scala.concurrent.duration.{Duration, FiniteDuration}
 
 case class SearchDefinition(indexesTypes: IndexesAndTypes,
                             aggs: Seq[AbstractAggregation] = Nil,
-                            collapse: Option[CollapseDefinition] = None,
                             docValues: Seq[String] = Nil,
-                            explain: Option[Boolean] = None,
                             fetchContext: Option[FetchSourceContext] = None,
                             from: Option[Int] = None,
                             indicesOptions: Option[IndicesOptions] = None,
-                            inners: Seq[InnerHitDefinition] = Nil,
-                            indexBoosts: Seq[(String, Double)] = Nil,
                             keepAlive: Option[String] = None,
-                            highlight: Option[Highlight] = None,
                             minScore: Option[Double] = None,
-                            pref: Option[String] = None,
                             query: Option[QueryDefinition] = None,
                             postFilter: Option[QueryDefinition] = None,
                             requestCache: Option[Boolean] = None,
-                            rescorers: Seq[RescoreDefinition] = Nil,
                             scriptFields: Seq[ScriptFieldDefinition] = Nil,
                             sorts: Seq[SortDefinition] = Nil,
                             storedFields: Seq[String] = Nil,
-                            suggs: Seq[SuggestionDefinition] = Nil,
-                            globalSuggestionText: Option[String] = None,
                             size: Option[Int] = None,
                             routing: Option[String] = None,
                             stats: Seq[String] = Nil,
                             searchType: Option[SearchType] = None,
                             searchAfter: Seq[Any] = Nil,
-                            trackScores: Option[Boolean] = None,
                             terminateAfter: Option[Int] = None,
                             timeout: Option[Duration] = None,
                             version: Option[Boolean] = None
@@ -67,9 +57,6 @@ case class SearchDefinition(indexesTypes: IndexesAndTypes,
 
   @deprecated("Use matchAllQuery()", "5.2.0")
   def matchAll(): SearchDefinition = query(new MatchAllQueryDefinition)
-
-  def inner(first: InnerHitDefinition, rest: InnerHitDefinition*): SearchDefinition = inner(first +: rest)
-  def inner(inners: Iterable[InnerHitDefinition]): SearchDefinition = copy(inners = inners.toSeq)
 
   def searchAfter(values: Seq[Any]): SearchDefinition = copy(searchAfter = values)
 
@@ -98,18 +85,6 @@ case class SearchDefinition(indexesTypes: IndexesAndTypes,
     */
   def scriptfields(fields: ScriptFieldDefinition*): SearchDefinition = scriptfields(fields)
   def scriptfields(fields: Iterable[ScriptFieldDefinition]): SearchDefinition = copy(scriptFields = fields.toSeq)
-
-  /**
-    * Adds a new suggestion to the search request, which can be looked up in the response
-    * using the name provided.
-    */
-  def suggestions(first: SuggestionDefinition,
-                  rest: SuggestionDefinition*): SearchDefinition = suggestions(first +: rest)
-
-  def suggestions(suggs: Iterable[SuggestionDefinition]): SearchDefinition = copy(suggs = suggs.toSeq)
-  def suggestion(sugg: SuggestionDefinition): SearchDefinition = suggestions(Seq(sugg))
-
-  def globalSuggestionText(text: String): SearchDefinition = copy(globalSuggestionText = text.some)
 
   // Adds a single prefix query to this search
   def prefix(name: String, value: Any): SearchDefinition = query(PrefixQueryDefinition(name, value))
@@ -185,23 +160,6 @@ case class SearchDefinition(indexesTypes: IndexesAndTypes,
     */
   def source(json: String): SearchDefinition = ??? // todo
 
-  def explain(enabled: Boolean): SearchDefinition = copy(explain = enabled.some)
-
-  def highlighting(first: HighlightFieldDefinition,
-                   rest: HighlightFieldDefinition*): SearchDefinition =
-    highlighting(HighlightOptionsDefinition(), first +: rest)
-
-  def highlighting(fields: Iterable[HighlightFieldDefinition]): SearchDefinition =
-    highlighting(HighlightOptionsDefinition(), fields)
-
-  def highlighting(options: HighlightOptionsDefinition,
-                   first: HighlightFieldDefinition,
-                   rest: HighlightFieldDefinition*): SearchDefinition = highlighting(options, first +: rest)
-
-  def highlighting(options: HighlightOptionsDefinition,
-                   fields: Iterable[HighlightFieldDefinition]): SearchDefinition =
-    copy(highlight = Highlight(options, fields).some)
-
   def routing(r: String): SearchDefinition = copy(routing = r.some)
 
   def start(i: Int): SearchDefinition = from(i)
@@ -210,13 +168,7 @@ case class SearchDefinition(indexesTypes: IndexesAndTypes,
   def limit(i: Int): SearchDefinition = size(i)
   def size(i: Int): SearchDefinition = copy(size = i.some)
 
-  def preference(pref: com.sksamuel.elastic4s.Preference): SearchDefinition = preference(pref.value)
-  def preference(pref: String): SearchDefinition = copy(pref = pref.some)
-
   def indicesOptions(options: IndicesOptions): SearchDefinition = copy(indicesOptions = options.some)
-
-  def rescore(first: RescoreDefinition, rest: RescoreDefinition*): SearchDefinition = rescore(first +: rest)
-  def rescore(rescorers: Iterable[RescoreDefinition]): SearchDefinition = copy(rescorers = rescorers.toSeq)
 
   // alias for scroll
   def keepAlive(keepAlive: String): SearchDefinition = scroll(keepAlive)
@@ -239,13 +191,8 @@ case class SearchDefinition(indexesTypes: IndexesAndTypes,
   def docValues(first: String, rest: String*): SearchDefinition = docValues(first +: rest)
   def docValues(fields: Seq[String]): SearchDefinition = copy(docValues = fields)
 
-  def indexBoost(map: Map[String, Double]): SearchDefinition = indexBoost(map.toList: _*)
-  def indexBoost(tuples: (String, Double)*): SearchDefinition = copy(indexBoosts = tuples)
-
   def timeout(timeout: FiniteDuration): SearchDefinition = copy(timeout = timeout.some)
   def stats(groups: String*): SearchDefinition = copy(stats = groups.toSeq)
-
-  def trackScores(enabled: Boolean): SearchDefinition = copy(trackScores = enabled.some)
 
   @deprecated("Renamed to storedFields", "5.0.0")
   def fields(fields: String*): SearchDefinition = storedFields(fields)
@@ -265,5 +212,4 @@ case class SearchDefinition(indexesTypes: IndexesAndTypes,
   def sourceFiltering(includes: Iterable[String], excludes: Iterable[String]): SearchDefinition =
     copy(fetchContext = FetchSourceContext(true, includes.toArray, excludes.toArray).some)
 
-  def collapse(collapse: CollapseDefinition): SearchDefinition = copy(collapse = collapse.some)
 }

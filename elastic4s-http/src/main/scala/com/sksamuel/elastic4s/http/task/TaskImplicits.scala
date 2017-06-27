@@ -40,10 +40,6 @@ trait TaskImplicits {
         params.put("nodes", request.nodeIds.mkString(","))
       if (request.actions.nonEmpty)
         params.put("actions", request.actions.mkString(","))
-      if (request.detailed.contains(true))
-        params.put("detailed", "true")
-      if (request.waitForCompletion.contains(true))
-        params.put("wait_for_completion", "true")
       request.groupBy.foreach(params.put("group_by", _))
 
       client.async("GET", s"/_tasks", params.toMap)

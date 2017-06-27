@@ -47,7 +47,6 @@ trait MappingExecutables {
       val params = scala.collection.mutable.Map.empty[String, Any]
       request.updateAllTypes.foreach(params.put("update_all_types", _))
       request.ignoreUnavailable.foreach(params.put("ignore_unavailable", _))
-      request.allowNoIndices.foreach(params.put("allow_no_indices", _))
       request.expandWildcards.foreach(params.put("expand_wildcards", _))
 
       val body = PutMappingBuilder(request).string()
