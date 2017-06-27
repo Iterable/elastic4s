@@ -18,17 +18,13 @@ case class GeoshapeFieldDefinition(name: String,
                                    normalizer: Option[String] = None,
                                    nullable: Option[Boolean] = None,
                                    nullValue: Option[Any] = None,
-                                   similarity: Option[String] = None,
                                    store: Option[Boolean] = None,
                                    tree: Option[String] = None,
                                    precision: Option[String] = None,
-                                   strategy: Option[String] = None,
                                    distanceErrorPct: Option[Double] = None,
-                                   orientation: Option[String] = None,
-                                   pointsOnly: Option[Boolean] = None,
                                    searchAnalyzer: Option[String] = None,
-                                   termVector: Option[String] = None,
-                                   treeLevels: Option[String] = None) extends FieldDefinition {
+                                   termVector: Option[String] = None
+                                   ) extends FieldDefinition {
 
   type T = GeoshapeFieldDefinition
 
@@ -56,15 +52,10 @@ case class GeoshapeFieldDefinition(name: String,
 
   override def searchAnalyzer(analyzer: String): T = copy(searchAnalyzer = analyzer.some)
   override def store(b: Boolean): T = copy(store = b.some)
-   def similarity(similarity: String): T = copy(similarity = similarity.some)
 
   override def termVector(t: String): T = copy(termVector = t.some)
 
   def tree(tree: String): GeoshapeFieldDefinition = copy(tree = tree.some)
   def precision(precision: String): GeoshapeFieldDefinition = copy(precision = precision.some)
-  def strategy(strategy: String): GeoshapeFieldDefinition = copy(strategy = strategy.some)
   def distanceErrorPct(distanceErrorPct: Double): GeoshapeFieldDefinition = copy(distanceErrorPct = distanceErrorPct.some)
-  def orientation(orientation: String): GeoshapeFieldDefinition = copy(orientation = orientation.some)
-  def pointsOnly(pointsOnly: Boolean): GeoshapeFieldDefinition = copy(pointsOnly = pointsOnly.some)
-  def treeLevels(treeLevels: String): GeoshapeFieldDefinition = copy(treeLevels = treeLevels.some)
 }

@@ -13,7 +13,6 @@ case class TextFieldDefinition(name: String,
                                fielddata: Option[Boolean] = None,
                                fielddataFrequencyFilter: Option[FielddataFrequencyFilter] = None,
                                includeInAll: Option[Boolean] = None,
-                               ignoreAbove: Option[Int] = None,
                                index: Option[String] = None,
                                indexOptions: Option[String] = None,
                                maxInputLength: Option[Int] = None,
@@ -21,10 +20,8 @@ case class TextFieldDefinition(name: String,
                                normalizer: Option[String] = None,
                                nullable: Option[Boolean] = None,
                                nullValue: Option[Any] = None,
-                               positionIncrementGap: Option[Int] = None,
                                searchAnalyzer: Option[String] = None,
                                searchQuoteAnalyzer: Option[String] = None,
-                               similarity: Option[String] = None,
                                store: Option[Boolean] = None,
                                termVector: Option[String] = None
                               ) extends FieldDefinition {
@@ -46,14 +43,10 @@ case class TextFieldDefinition(name: String,
 
   def fielddata(fielddata: Boolean): T = copy(fielddata = fielddata.some)
 
-  def similarity(similarity: String): T = copy(similarity = similarity.some)
-
-  def ignoreAbove(ignoreAbove: Int): T = copy(ignoreAbove = ignoreAbove.some)
   override def includeInAll(includeInAll: Boolean): T = copy(includeInAll = includeInAll.some)
 
   override def index(index: Boolean): T = copy(index = index.toString.some)
 
-  def positionIncrementGap(positionIncrementGap: Int): T = copy(positionIncrementGap = positionIncrementGap.some)
   def maxInputLength(maxInputLength: Int): T = copy(maxInputLength = maxInputLength.some)
 
   override def norms(norms: Boolean): T = copy(norms = norms.some)

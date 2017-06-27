@@ -58,16 +58,12 @@ object FieldBuilderFn {
         basic.ignoreAbove.foreach(builder.field("ignore_above", _))
         basic.ignoreMalformed.foreach(builder.field("ignore_malformed", _))
         basic.indexOptions.foreach(builder.field("index_options", _))
-        basic.scalingFactor.foreach(builder.field("scaling_factor", _))
         basic.coerce.foreach(builder.field("coerce", _))
         basic.format.foreach(builder.field("format", _))
-        basic.similarity.foreach(builder.field("similarity", _))
 
       case comp: CompletionFieldDefinition =>
         comp.preservePositionIncrements.foreach(builder.field("preserve_position_increments", _))
         comp.preserveSeparators.foreach(builder.field("preserve_separators", _))
-        comp.ignoreAbove.foreach(builder.field("ignore_above", _))
-        comp.ignoreMalformed.foreach(builder.field("ignore_malformed", _))
         comp.indexOptions.foreach(builder.field("index_options", _))
         comp.maxInputLength.foreach(builder.field("max_input_length", _))
         comp.coerce.foreach(builder.field("coerce", _))
@@ -75,11 +71,7 @@ object FieldBuilderFn {
       case geo: GeoshapeFieldDefinition =>
         geo.tree.foreach(builder.field("tree", _))
         geo.precision.foreach(builder.field("precision", _))
-        geo.treeLevels.foreach(builder.field("tree_levels", _))
-        geo.strategy.foreach(builder.field("strategy", _))
         geo.distanceErrorPct.foreach(builder.field("distance_error_pct", _))
-        geo.orientation.foreach(builder.field("orientation", _))
-        geo.pointsOnly.foreach(builder.field("points_only", _))
         geo.coerce.foreach(builder.field("coerce", _))
         geo.format.foreach(builder.field("format", _))
         geo.ignoreMalformed.foreach(builder.field("ignore_malformed", _))
@@ -92,11 +84,8 @@ object FieldBuilderFn {
 
       case text: TextFieldDefinition =>
         text.eagerGlobalOrdinals.foreach(builder.field("eager_global_ordinals", _))
-        text.positionIncrementGap.foreach(builder.field("position_increment_gap", _))
         text.fielddata.foreach(builder.field("fielddata", _))
         text.maxInputLength.foreach(builder.field("max_input_length", _))
-        text.ignoreAbove.foreach(builder.field("ignore_above", _))
-        text.similarity.foreach(builder.field("similarity", _))
 
       case keyword: KeywordFieldDefinition =>
         keyword.eagerGlobalOrdinals.foreach(builder.field("eager_global_ordinals", _))

@@ -77,9 +77,7 @@ case class BasicFieldDefinition(name: String,
                                 normalizer: Option[String] = None,
                                 nullable: Option[Boolean] = None,
                                 nullValue: Option[Any] = None,
-                                scalingFactor: Option[Double] = None,
                                 searchAnalyzer: Option[String] = None,
-                                similarity: Option[String] = None,
                                 store: Option[Boolean] = None,
                                 termVector: Option[String] = None
                                ) extends FieldDefinition {
@@ -99,10 +97,6 @@ case class BasicFieldDefinition(name: String,
   override def enabled(enabled: Boolean): T = copy(enabled = enabled.some)
 
   def format(format: String): T = copy(format = format.some)
-
-  def scalingFactor(scalingFactor: Double): T = copy(scalingFactor = scalingFactor.some)
-
-  def similarity(similarity: String): T = copy(similarity = similarity.some)
 
   def ignoreAbove(ignoreAbove: Int): T = copy(ignoreAbove = ignoreAbove.some)
   def ignoreMalformed(ignoreMalformed: Boolean): T = copy(ignoreMalformed = ignoreMalformed.some)
