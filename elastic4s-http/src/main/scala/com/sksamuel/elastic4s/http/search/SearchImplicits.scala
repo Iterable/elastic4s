@@ -72,7 +72,7 @@ trait SearchImplicits {
       request.requestCache.map(_.toString).foreach(params.put("request_cache", _))
       request.searchType.map(_.toString).foreach(params.put("search_type", _))
       request.keepAlive.foreach(params.put("scroll", _))
-
+      request.routing.foreach(params.put("routing", _))
       request.indicesOptions.foreach { opts =>
         IndicesOptionsParams(opts).foreach { case (key, value) => params.put(key, value) }
       }
